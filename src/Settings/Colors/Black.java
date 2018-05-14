@@ -6,6 +6,6 @@ public class Black extends Color {
 
     @Override
     protected void setColor() {
-        this.color = "BLACK";
+        this.color = "\u001B[30m";
     }
 }

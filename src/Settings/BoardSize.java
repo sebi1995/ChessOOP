@@ -2,7 +2,7 @@ package Settings;
 
 public class BoardSize {
 
-    private Integer boardPieceRate = 2;
+    private Integer boardPieceRate = 1;
     private Integer x = (boardPieceRate * 8);
     private Integer y = (boardPieceRate * 8);
 

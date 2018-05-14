@@ -38,15 +38,35 @@ public class PieceFactory {
 
     public List<Piece> getPieceList(Color color) {
 
-        List<Piece> pieces = new ArrayList<>(new BoardSize().getY());
-        pieces.add(getPiece("ROOK", color));
-        pieces.add(getPiece("KNIGHT", color));
-        pieces.add(getPiece("BISHOP", color));
-        pieces.add(getPiece("QUEEN", color));
-        pieces.add(getPiece("KING", color));
-        pieces.add(getPiece("BISHOP", color));
-        pieces.add(getPiece("KNIGHT", color));
-        pieces.add(getPiece("ROOK", color));
+        BoardSize boardSize = new BoardSize();
+        List<Piece> pieces = new ArrayList<>(boardSize.getY());
+
+        Integer rate = boardSize.getPieceRate();
+
+        for (int i = 0; i < rate; ++i) {
+            pieces.add(getPiece("ROOK", color));
+        }
+        for (int i = 0; i < rate; ++i) {
+            pieces.add(getPiece("KNIGHT", color));
+        }
+        for (int i = 0; i < rate; ++i) {
+            pieces.add(getPiece("BISHOP", color));
+        }
+        for (int i = 0; i < rate; ++i) {
+            pieces.add(getPiece("QUEEN", color));
+        }
+        for (int i = 0; i < rate; ++i) {
+            pieces.add(getPiece("KING", color));
+        }
+        for (int i = 0; i < rate; ++i) {
+            pieces.add(getPiece("BISHOP", color));
+        }
+        for (int i = 0; i < rate; ++i) {
+            pieces.add(getPiece("KNIGHT", color));
+        }
+        for (int i = 0; i < rate; ++i) {
+            pieces.add(getPiece("ROOK", color));
+        }
 
         return pieces;
     }

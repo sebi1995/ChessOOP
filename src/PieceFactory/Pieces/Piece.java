@@ -53,4 +53,8 @@ public abstract class Piece {
     public void setColor(Color color) {
         this.color = color;
     }
+
+    public Color getColorObject() {
+        return this.color;
+    }
 }
