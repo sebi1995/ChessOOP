@@ -2,51 +2,64 @@ package Game;
 
 import PieceFactory.PieceFactory;
 import PieceFactory.Pieces.Piece;
-import PieceFactory.Pieces.Position;
-import Settings.BoardPieceRate;
 import Settings.BoardSize;
 import Settings.Colors.Black;
+import Settings.Colors.White;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Board {
 
-    Piece[][] pieces;
+    Piece[][] board;
     Player player;
+    Integer boardY,
+            boardX,
+            pieceRate;
 
     public Board(Player currentPlayer) {
         this.player = currentPlayer;
         initiateBoard();
+
+
+        printBoard();
+
+
+    }
+
+    private void printBoard() {
+        for (int i = 0; i < boardY; i++) {
+            for (int j = 0; j < boardX; j++) {
+                if (board[i][j] != null) {
+                    System.out.print(board[i][j].getName());
+                } else {
+                    System.out.print("NULL");
+                }
+            }
+            System.out.println();
+        }
     }
 
     private void initiateBoard() {
 
         BoardSize boardSize = new BoardSize();
-        BoardPieceRate boardPieceRate = new BoardPieceRate();
 
-        Integer boardY = boardSize.getY(),
-                boardX = boardSize.getX(),
-                pieceRate = boardPieceRate.getPieceRate();
+        boardY = boardSize.getY();
+        boardX = boardSize.getX();
+        pieceRate = boardSize.getPieceRate();
 
-        pieces = new Piece[boardY][boardX];
-
-        for (int i = 0; i < boardY; i++) {
-            
-        }
+        board = new Piece[boardY][boardX];
 
         PieceFactory pieceFactory = new PieceFactory();
 
-        List<Piece> pieces = new ArrayList<>();
-        pieces.add(pieceFactory.getPiece("ROOK", new Black()));
-        pieces.get(0).setPosition(new Position(0,1));
-        pieces.add(pieceFactory.getPiece("KNIGHT", new Black()));
-        pieces.add(pieceFactory.getPiece("BISHOP", new Black()));
-        pieces.add(pieceFactory.getPiece("QUEEN", new Black()));
-        pieces.add(pieceFactory.getPiece("KING", new Black()));
-        pieces.add(pieceFactory.getPiece("BISHOP", new Black()));
-        pieces.add(pieceFactory.getPiece("KNIGHT", new Black()));
-        pieces.add(pieceFactory.getPiece("ROOK", new Black()));
+        List<Piece> blackPieces = pieceFactory.getPieceList(new Black());
+        System.out.println(blackPieces.size());
+        List<Piece> whitePieces = pieceFactory.getPieceList(new White());
 
+        for (int i = 0; i < boardX; i++) {
+            if (blackPieces.get(i) == null) {
+                break;
+            }
+            board[boardY - 1][i] = blackPieces.get(i);
+        }
     }
 }
