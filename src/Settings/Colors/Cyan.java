@@ -2,10 +2,9 @@ package Settings.Colors;
 
 import Settings.Color;
 
-public class White extends Color {
-
+public class Cyan extends Color {
     @Override
     protected void setColor() {
-        this.color = "\u001b[37m";
+        this.color = "\u001b[36m";
     }
 }

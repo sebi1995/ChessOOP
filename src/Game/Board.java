@@ -4,9 +4,7 @@ import PieceFactory.PieceFactory;
 import PieceFactory.Pieces.Piece;
 import Settings.BoardSize;
 import Settings.Color;
-import Settings.Colors.Black;
-import Settings.Colors.Red;
-import Settings.Colors.White;
+import Settings.Colors.*;
 
 import java.util.List;
 
@@ -14,13 +12,17 @@ public class Board {
 
     private Piece[][] board;
     private Player player;
+    private Color player1Color, player2Color;
     private Integer boardY,
             boardX,
             pieceRate;
-    private String resetColor = "\u001B[0m";
 
     public Board(Player currentPlayer) {
         this.player = currentPlayer;
+
+        this.player1Color = new Red();
+        this.player2Color = new Cyan();
+
         initiateBoard();
 
 
@@ -41,7 +43,7 @@ public class Board {
                 if (board[i][j] != null) {
                     String color = board[i][j].getColor();
                     String name = board[i][j].getName();
-                    stringBuilder.append(color).append(name).append(resetColor);
+                    stringBuilder.append(color).append(name).append(new Reset());
                     for (int k = name.length(); k <= 10; ++k) {
                         stringBuilder.append(" ");
                     }
@@ -72,25 +74,24 @@ public class Board {
 
         PieceFactory pieceFactory = new PieceFactory();
 
-        List<Piece> blackPieces = pieceFactory.getPieceList(new Black());
-        List<Piece> whitePieces = pieceFactory.getPieceList(new White());
+        List<Piece> player1Pieces = pieceFactory.getPieceList(player1Color);
+        List<Piece> player2Pieces = pieceFactory.getPieceList(player2Color);
 
         for (int i = 0; i < boardX; i++) {
-            board[boardY - 1][i] = blackPieces.get(i);
+            board[boardY - 1][i] = player1Pieces.get(i);
         }
 
         for (int i = 0; i < boardX; ++i) {
-            board[boardX - 2][i] = pieceFactory.getPiece("PAWN", new Black());
+            board[boardX - 2][i] = pieceFactory.getPiece("PAWN", player1Color);
         }
 
         int n = boardX - 1;
-
         for (int i = 0; i < boardX; ++i) {
-            board[0][i] = whitePieces.get(n--);
+            board[0][i] = player2Pieces.get(n--);
         }
 
         for (int i = 0; i < boardX; ++i) {
-            board[1][i] = pieceFactory.getPiece("PAWN", new White());
+            board[1][i] = pieceFactory.getPiece("PAWN", player2Color);
         }
     }
 
@@ -99,27 +100,33 @@ public class Board {
 
         for (int y = 0; y < boardY; ++y) {
             for (int x = 0; x < boardX; ++x) {
-                if (this.board[y][x] != null && this.board[y][x].getColorObject() instanceof Black) {
-                    placeHolder[boardY - y - 1][boardX - x-1] = this.board[y][x];
+
+                if (this.board[y][x] != null && this.board[y][x].getColorObject() == player1Color) {
+                    placeHolder[boardY - y - 1][boardX - x - 1] = this.board[y][x];
                     this.board[y][x] = null;
                 }
+
+            }
+        }
+
+        for (int y = boardY - 1; y >= 0; --y) {
+            for (int x = 0; x > boardX; ++x) {
+
+                if (this.board[y][x] != null) {
+                    this.board[boardY - y - 1][boardX - x - 1] = this.board[y][x];
+                    this.board[y][x] = null;
+                }
+
             }
         }
 
         for (int y = 0; y < boardY; ++y) {
             for (int x = 0; x < boardX; ++x) {
-                if (this.board[y][x] != null && this.board[y][x].getColorObject() instanceof Red) {
-                    this.board[boardY - y-1][boardX - x-1] = this.board[y][x];
-                    this.board[y][x] = null;
-                }
-            }
-        }
 
-        for (int y = 0; y < boardY; ++y) {
-            for (int x = 0; x < boardX; ++x) {
                 if (this.board[y][x] != null) {
                     this.board[y][x] = placeHolder[y][x];
                 }
+
             }
         }
 
