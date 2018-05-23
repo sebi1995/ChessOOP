@@ -11,20 +11,15 @@ import java.util.List;
 public class Board {
 
     private Piece[][] board;
-    private Player player;
-    private Color player1Color, player2Color;
+    private Player currentPlayer;
+    private Player player1, player2;
     private Integer boardY,
-            boardX,
-            pieceRate;
+            boardX;
 
-    public Board(Player currentPlayer) {
-        this.player = currentPlayer;
-
-        this.player1Color = new Red();
-        this.player2Color = new Cyan();
+    public Board(Player currentPlayer, Player player2) {
+        this.currentPlayer = currentPlayer;
 
         initiateBoard();
-
 
         System.out.println(printBoard());
         flipBoard();
@@ -68,21 +63,20 @@ public class Board {
 
         boardY = boardSize.getY();
         boardX = boardSize.getX();
-        pieceRate = boardSize.getPieceRate();
 
         board = new Piece[boardY][boardX];
 
         PieceFactory pieceFactory = new PieceFactory();
 
-        List<Piece> player1Pieces = pieceFactory.getPieceList(player1Color);
-        List<Piece> player2Pieces = pieceFactory.getPieceList(player2Color);
+        List<Piece> player1Pieces = pieceFactory.getPieceList(player1.getColorObject());
+        List<Piece> player2Pieces = pieceFactory.getPieceList(player2.getColorObject());
 
         for (int i = 0; i < boardX; i++) {
             board[boardY - 1][i] = player1Pieces.get(i);
         }
 
         for (int i = 0; i < boardX; ++i) {
-            board[boardX - 2][i] = pieceFactory.getPiece("PAWN", player1Color);
+            board[boardX - 2][i] = pieceFactory.getPiece("PAWN", player1.getColorObject());
         }
 
         int n = boardX - 1;
@@ -91,7 +85,7 @@ public class Board {
         }
 
         for (int i = 0; i < boardX; ++i) {
-            board[1][i] = pieceFactory.getPiece("PAWN", player2Color);
+            board[1][i] = pieceFactory.getPiece("PAWN", player2.getColorObject());
         }
     }
 
@@ -101,7 +95,7 @@ public class Board {
         for (int y = 0; y < boardY; ++y) {
             for (int x = 0; x < boardX; ++x) {
 
-                if (this.board[y][x] != null && this.board[y][x].getColorObject() == player1Color) {
+                if (this.board[y][x] != null && this.board[y][x].getColorObject().equals(player1.getColorObject())) {
                     placeHolder[boardY - y - 1][boardX - x - 1] = this.board[y][x];
                     this.board[y][x] = null;
                 }
